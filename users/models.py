@@ -28,7 +28,6 @@ def birthday_filter(birthday):
     return age
 
 
-
 class AbstractUser(AbstractBaseUser, PermissionsMixin):
     USERS_AUTO_ACTIVATE = not settings.USERS_VERIFY_EMAIL
 
@@ -85,27 +84,27 @@ class User(AbstractUser):
     Use this if you don't need to extend User.
     """
 
-    name = models.CharField(max_length=20, default='第一次登录') #姓名
-    sex = models.CharField(max_length=3, default='男')          #性别
+    name = models.CharField(max_length=20, default='第一次登录')  # 姓名
+    sex = models.CharField(max_length=3, default='男')  # 性别
     birthday = models.CharField(max_length=20, default='1997-10-31')
     job_number = models.CharField(max_length=10, default='0001')
 
     zhengzhi_mianmao = models.CharField(max_length=10, default='群众')
     zhengzhi_time = models.CharField(max_length=20, default='2010-10-31')
 
-    job = models.CharField(max_length=30, default='工程师')
-    job_time = models.CharField(max_length=20, default='2015-10-31')
+    job = models.CharField(max_length=30, default='工程师')  #职称
+    job_time = models.CharField(max_length=20, default='2015-10-31')   #职称时间
 
-    job_2 = models.CharField(max_length=30, default='员工')
-    id_number = models.CharField(max_length=30, default='111111111111111')
+    job_2 = models.CharField(max_length=30, default='员工')   #职务
+    id_number = models.CharField(max_length=30, default='111111111111111')   #身份证号
 
-    xueli = models.CharField(max_length=30, default='本科')
-    school = models.CharField(max_length=30, default='北京大学')
-    graduate_time = models.CharField(max_length=20, default='2008-10-10')
-    job_join_time = models.CharField(max_length=20, default='2019-10-10')
-    team_belong = models.CharField(max_length=20, default='C640')
+    xueli = models.CharField(max_length=30, default='本科')   #学历
+    school = models.CharField(max_length=30, default='北京大学')  #学校
+    graduate_time = models.CharField(max_length=20, default='2008-10-10')  #毕业时间
+    job_join_time = models.CharField(max_length=20, default='2019-10-10')   #入职时间
+    team_belong = models.CharField(max_length=20, default='C640')   #所属部门
 
-    phone = models.CharField(max_length=30, default='1888888888')
+    phone = models.CharField(max_length=30, default='1888888888')   #手机号
 
     class Meta(AbstractUser.Meta):
         swappable = 'AUTH_USER_MODEL'

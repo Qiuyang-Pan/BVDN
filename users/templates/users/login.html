@@ -11,10 +11,12 @@
 		{% for field in form %}
 			{% include "users/partials/field.html" %}
 		{% endfor %}
+		<br>
 		<div class="button-wrapper submit">
-			<input type="submit" value="{% trans 'Log in' %}" />
+			<input class="btn btn-primary" type="submit" value="{% trans 'Log in' %}" />
 		</div>
 		<input type="hidden" name="next" value="{{ next }}" />
+		<br>
 		<p><a href="{% url 'users_password_reset' %}">{% trans "Forgot password" %}</a></p>
 		<p><a href="{% url 'users_register' %}">{% trans "Register" %}</a></p>
 	</form>

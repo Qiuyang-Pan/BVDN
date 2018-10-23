@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<!-- bootstrap -->
+	<link rel="stylesheet" href="/static/css/bootstrap.css">
+	<link rel="stylesheet" href="/static/css.bootstrap-theme.css">
+	<script src="/static/js/jquery.js"></script>
+	<script src="/static/js/bootstrap.js"></script>
+	<!-- vue -->
+	<script src="/static/js/vue.js"></script>
+	<!--csrt token-->
+	<script type="text/javascript" src="/static/js/csrf.js"></script>
+	<title>My First Page</title>
+</head>
+
+<body>
+<nav class="navbar navbar-inverse" role="navigation">
+	<div class="container-fluid">
+		<div class="navbar-header">
+			<a class="navbar-brand" href="#">C640</a>
+		</div>
+		<ul class="nav navbar-nav">
+			<li class="active"><a href="/">首页</a></li>
+			<li><a href="#">待办事项</a></li>
+			{% if request.user.is_authenticated %}
+			<li><a href="#">当前用户：{{ request.user.name }}</a></li>
+			<li class="dropdown">
+				<a href="#" class="dropdown-toggle" data-toggle="dropdown">个人中心</a>
+				<ul class="dropdown-menu">
+					<li><a href="#">定制工具</a></li>
+					<!--<li><a href="#">?</a></li>-->
+					<!--<li><a href="#">?</a></li>-->
+					<li class="divider"></li>
+					<li><a href="/accounts/profile/">修改个人信息</a></li>
+					<li class="divider"></li>
+					<li><a href="/accounts/logout/">登出</a></li>
+				</ul>
+			</li>
+			{% else %}
+			<li><a href="/accounts/login/">登录</a></li>
+			<li><a href="/accounts/register">注册</a></li>
+			{% endif %}
+		</ul>
+	</div>
+</nav>
+
+<div class="container container-center jumbotron">
+	<div class="col-sm-8 col-sm-offset-4">
+		{% block content %}
+		<div id="app" class="form-group">
+			<p class="form-control" v-text=""></p>
+			<span>Input here:</span>
+			<input class="form-control" v-model="">
+		</div>
+		{% endblock %}
+	</div>
+</div>
+
+{% for blog in blogs %}
+	<article class="article">
+		<h2><a href="#"><b>{{ blog.name }}</b></a></h2>{% load poll_extras %}
+		<p class="small text-secondary">发表于{{ blog.created_at|datetime }}</p>
+		<p class="text-secondary">{{ blog.content }}</p>
+		<p><a href="/blog{{ blog.id }}">继续阅读 <i class="uk-icon-angle-double-right"></i></a></p>
+	</article>
+	<hr class="article-divider">
+{% empty %}
+<h2>暂无通知</h2>
+{% endfor %}
+{% block vuejs %}
+<script type="text/javascript">
+	var vm = new Vue({
+		el:'#app',
+		data:{
+			email:'{{ request.user.email }}',
+			name:'{{ request.user.name }}',
+			sex:'{{ request.user.sex }}',
+			birthday:'{{ request.user.birthday }}',
+			job_number:'{{ request.user.job_number }}',
+
+			zhengzhi_mianmao:'{{ request.user.zhengzhi_mianmao }}',
+			zhengzhi_time:'{{ request.user.zhengzhi_time }}',
+
+			job:'{{ request.user.job }}',
+			job_time:'{{ request.user.job_time }}',
+			job_2:'{{ request.user.job_2 }}',
+			id_number:'{{ request.user.id_number }}',
+
+			xueli:'{{ request.user.xueli }}',
+			school:'{{ request.user.school }}',
+			graduate_time:'{{ request.user.graduate_time }}',
+			job_join_time:'{{ request.user.job_join_time }}',
+			team_belong:'{{ request.user.team_belong }}',
+			phone:'{{ request.user.phone }}',
+		},
+		methods:{
+			submit(){
+				data_to_send = {
+					name: this.name,
+					sex: this.sex,
+					birthday: this.birthday,
+					job_number: this.job_number,
+
+					zhengzhi_mianmao: this.zhengzhi_mianmao,
+					zhengzhi_time: this.zhengzhi_time,
+
+					job: this.job,
+					job_time: this.job_time,
+					job_2: this.job_2,
+					id_number: this.id_number,
+
+					xueli: this.xueli,
+					school: this.school,
+					graduate_time: this.graduate_time,
+					job_join_time: this.job_join_time,
+					team_belong: this.team_belong,
+					phone: this.phone,
+				};
+				console.log(data_to_send);
+				data_to_send = JSON.stringify(data_to_send);
+				console.log(data_to_send);
+
+				$.post(
+					'/accounts/profile/',
+					data_to_send,
+					function(r,err){
+						if(err === 'success'){
+							alert('修改已保存')
+							return location.assign('/accounts/profile/');
+						}else{
+							return console.log(err);
+						}
+					}
+				);
+
+			},
+		},
+	});
+</script>
+{% endblock %}
+</body>
+</html>
